@@ -21,6 +21,8 @@
   var play = '<i class="fa fa-play"></i>';
   var pause = '<i class="fa fa-pause"></i>';
 
+  // Add top clear/tock buttons. Stick them inside this IIFE
+  // to prevent scope pollution
   (function() {
     var clearButton = $('<button class="tock-play">Clear Timers</button>');
     var tockButton = $('<button class="tock-play">Tock the Timers</button>');
@@ -32,41 +34,45 @@
     $('<div style="clear: both;"/>').insertBefore(theForm);
     clearButton.insertBefore(theForm);
     tockButton.insertBefore(theForm);
-  })();
 
-  function clearTimers(e) {
-    e.stopPropagation();
+    var clearTimers = function(e) {
+      e.stopPropagation();
 
-    $('.entry-elapsed').each(function(i, entry) {
-      $(entry).data('minutes', 0);
-      $(entry).text('0:00');
-    });
+      $('.entry-elapsed').each(function(i, entry) {
+        $(entry).data('minutes', 0);
+        $(entry).text('0:00');
+      });
 
-    if(interval) {
-      clearInterval(interval);
-      interval = false;
+      if(interval) {
+        clearInterval(interval);
+        interval = false;
+      }
+
+      storeTimes();
     }
 
-    storeTimes();
-  }
+    var tockTheTimers = function(e) {
+      e.stopPropagation();
 
-  function tockTheTimers(e) {
-    e.stopPropagation();
+      $('.entry-elapsed').each(function(i, entry) {
+        entry = $(entry);
+        var input = $('input', entry.siblings('.entry-amount'));
+        var newHours = Math.floor(entry.data('minutes') / 15) / 4;
+        input.val(Number(input.val()) + newHours);
+      });
 
-    $('.entry-elapsed').each(function(i, entry) {
-      entry = $(entry);
-      var input = $('input', entry.siblings('.entry-amount'));
-      var newHours = Math.floor(entry.data('minutes') / 15) / 4;
-      input.val(Number(input.val()) + newHours);
-    });
+      populateHourTotals();
+      clearTimers(e);
 
-    populateHourTotals();
-    clearTimers(e);
+      setTimeout(function() {
+        alert('Your timers have been added to your Tock lines, and the timers reset.  Don\'t forget to save!');
+      }, 10);
+    }
+  })();
 
-    setTimeout(function() {
-      alert('Your timers have been added to your Tock lines, and the timers reset.  Don\'t forget to save!');
-    }, 10);
-  }
+  // Attach change listeners to all the actual Tock time boxes
+  // so we can dump those values into local storage.  No more
+  // accidental lost time!
 
   var startTime = 0;
   var tracking = false;
@@ -155,5 +161,38 @@
 
       }, 1000);
     })
-  })
+  });
+
+  if(window.localStorage) {
+    var __original_populateHourTotals = populateHourTotals;
+    populateHourTotals = function() {
+      var hoursAsEntered = { };
+      $('.entries .entry').each(function(i, entry) {
+        entry = $(entry);
+        var project = $('.entry-project select', entry).val();
+        var hours = $('.entry-amount input', entry).val();
+        hoursAsEntered[project] = hours;
+      });
+
+      window.localStorage.setItem('tock-entered-hours', JSON.stringify(hoursAsEntered));
+      __original_populateHourTotals();
+    };
+
+    $("#save-timecard").on("click", function() {
+      window.localStorage.removeItem('tock-entered-hours');
+    });
+
+    var entered = window.localStorage.getItem('tock-entered-hours');
+    if(entered) {
+      entered = JSON.parse(entered);
+      $('.entries .entry').each(function(i, entry) {
+        entry = $(entry);
+        var project = $('.entry-project select', entry).val();
+        if(entered[project]) {
+          $('.entry-amount input', entry).val(Number(entered[project]));
+        }
+      });
+      populateHourTotals();
+    }
+  }
 })($)
