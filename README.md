@@ -4,7 +4,7 @@ A browser userscript to add task timing capabilities to Tock.
 
 ## To use
 
-Drag this link to your bookmark bar: [Tock Timer](tock-play.min.js)
+Drag this link to your bookmark bar: [Tock Timer](https://github.com/18F/tock-task-timer-script/raw/master/tock-play.min.js)
 
 ## Public domain
 
