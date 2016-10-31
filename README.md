@@ -1,19 +1,10 @@
-[![Build Status](https://travis-ci.org/18F/standup-slack-bot.svg?branch=develop)](https://travis-ci.org/18F/standup-slack-bot)
-[![codecov.io](https://codecov.io/github/18F/standup-slack-bot/coverage.svg?branch=develop)](https://codecov.io/github/18F/standup-slack-bot?branch=develop)
-[![Code Climate](https://codeclimate.com/github/18F/standup-slack-bot/badges/gpa.svg)](https://codeclimate.com/github/18F/standup-slack-bot)
-[![Dependencies](https://david-dm.org/18f/standup-slack-bot.svg)](https://david-dm.org/18f/standup-slack-bot)
+# Tock Userscript
 
-# standup-bot
+A browser userscript to add task timing capabilities to Tock.
 
-A Slack bot to streamline team standup without disturbing the overall flow of conversation.
+## To use
 
-## Documentation links:
-
-- [Installation](documentation/installation.md)
-- [Admin](documentation/admin.md)
-- [Usage](documentation/interaction.md)
-- [Reports](documentation/reports.md)
-- [Glossary](documentation/glossary.md)
+Drag this link to your bookmark bar: [Tock Timer](tock-play.min.js)
 
 ## Public domain
 
