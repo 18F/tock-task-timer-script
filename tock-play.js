@@ -81,7 +81,16 @@
 
   function getMinutesDisplay(minutes) {
     var remainderSeconds = Math.floor((minutes - Math.floor(minutes)) * 60);
-    return Math.floor(minutes) + ':' + (remainderSeconds < 10 ? '0' : '') + remainderSeconds;
+    minutes = Math.floor(minutes);
+
+    var hours = '';
+    if(minutes > 60) {
+      hours = Math.floor(minutes / 60);
+      minutes = minutes - (hours * 60);
+      hours = hours + ':';
+    }
+
+    return hours + (minutes < 10 ? '0' : '') + minutes + ':' + (remainderSeconds < 10 ? '0' : '') + remainderSeconds;
   }
 
   var storeTimes = (function() {
