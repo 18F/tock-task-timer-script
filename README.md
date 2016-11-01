@@ -5,7 +5,7 @@ A browser userscript to add task timing capabilities to Tock.
 ## To use
 
 Copy the contents of [the compiled script](tock-play.min.js), create a bookmark
-in your browser, and past the contents of the script as the URL.  Then when you
+in your browser, and paste the contents of the script as the URL.  Then when you
 are on the Tock website, click the bookmark.
 
 ## Public domain
