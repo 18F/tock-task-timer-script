@@ -1,29 +1,30 @@
 (function($) {
-  var css =
-    '.yo, .entry-start {\
-      float: left;\
-      margin-right: 2rem;\
-      padding: 0.5rem 1rem;\
-      background-color: #477dca;\
-      color: white;\
-      border-radius: 3px;\
-      cursor: pointer;\
-    }\
-    \
-    .entry-elapsed {\
-      float: left;\
-    }\
-    button.tock-play {\
-      margin: 0 1rem;\
-    }';
-  $('head').append('<style type="text/css">' + css + '</style>');
+
+  (function add_css_to_head() {
+    var css =
+      '.entry-start {\
+        float: left;\
+        margin-right: 2rem;\
+        padding: 0.5rem 1rem;\
+        background-color: #046b99;\
+        color: white;\
+        border-radius: 3px;\
+        cursor: pointer;\
+      }\
+      \
+      .entry-elapsed {\
+        float: left;\
+      }\
+      button.tock-play {\
+        margin: 1rem;\
+      }';
+    $('head').append('<style type="text/css">' + css + '</style>');
+  })();
 
   var play = '<i class="fa fa-play"></i>';
   var pause = '<i class="fa fa-pause"></i>';
 
-  // Add top clear/tock buttons. Stick them inside this IIFE
-  // to prevent scope pollution
-  (function() {
+  (function add_clear_and_tock_buttons() {
     var clearButton = $('<button class="tock-play">Clear Timers</button>');
     var tockButton = $('<button class="tock-play">Tock the Timers</button>');
     var theForm = $('.form-horizontal.form-inline');
@@ -115,6 +116,8 @@
 
   var storedTimes = getTimesFromStorage();
 
+  // Add play/pause timer buttons and timer counters next to
+  // each tock line
   $('.entries .entry-amount').each(function(i, element) {
     var start = $('<div class="entry-start">' + play + '</div>');
     var elapsed = $('<div class="entry-elapsed">0:00</div>');
@@ -163,6 +166,11 @@
     })
   });
 
+  // If local storage is available...
+  //   1) overwrite the populateHourTotals method to save times
+  //      to local storage as they're changed
+  //   2) clear the local storage when the form is saved
+  //   3) restore hours from local storage when the page is loaded
   if(window.localStorage) {
     var __original_populateHourTotals = populateHourTotals;
     populateHourTotals = function() {
