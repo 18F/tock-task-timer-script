@@ -125,6 +125,23 @@
 
   var storedTimes = getTimesFromStorage();
 
+  var addTimersToTotal = (function() {
+    var total = $('.entries-total-reported-wrapper').clone();
+    total.text();
+    total.insertAfter($('.entries-total-reported-wrapper'));
+
+    return function() {
+      var time = 0;
+      $('.entry-elapsed').each(function(i, entry) {
+        time += $(entry).data('minutes');
+      });
+
+      time += (Number($('.entries-total-reported-amount').text()) * 60);
+
+      total.text('or ' + getMinutesDisplay(time) + ' with timers');
+    };
+  })();
+
   // Add play/pause timer buttons and timer counters next to
   // each tock line
   $('.entries .entry-amount').each(function(i, element) {
@@ -140,6 +157,7 @@
       elapsed.text(getMinutesDisplay(storedTimes[tockID]));
       elapsed.data('minutes', storedTimes[tockID]);
     }
+    add_timers_to_total();
 
     start.click(function(e) {
       // Don't let anything else get this event.
@@ -169,6 +187,7 @@
         var elapsedMinutes = (Date.now() - startTime) / 60000;
         elapsed.data('minutes', elapsedMinutes);
         elapsed.text(getMinutesDisplay(elapsedMinutes));
+        add_timers_to_total(getMinutesDisplay());
         storeTimes();
 
       }, 1000);
