@@ -157,7 +157,7 @@
       elapsed.text(getMinutesDisplay(storedTimes[tockID]));
       elapsed.data('minutes', storedTimes[tockID]);
     }
-    add_timers_to_total();
+    addTimersToTotal();
 
     start.click(function(e) {
       // Don't let anything else get this event.
@@ -187,7 +187,7 @@
         var elapsedMinutes = (Date.now() - startTime) / 60000;
         elapsed.data('minutes', elapsedMinutes);
         elapsed.text(getMinutesDisplay(elapsedMinutes));
-        add_timers_to_total(getMinutesDisplay());
+        addTimersToTotal(getMinutesDisplay());
         storeTimes();
 
       }, 1000);
