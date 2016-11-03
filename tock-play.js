@@ -29,9 +29,6 @@
     var tockButton = $('<button class="tock-play">Tock the Timers</button>');
     var theForm = $('.form-horizontal.form-inline');
 
-    clearButton.click(clearTimers);
-    tockButton.click(tockTheTimers);
-
     $('<div style="clear: both;"/>').insertBefore(theForm);
     clearButton.insertBefore(theForm);
     tockButton.insertBefore(theForm);
@@ -49,12 +46,12 @@
         interval = false;
       }
 
+      populateHourTotals();
       storeTimes();
     }
 
     var tockTheTimers = function(e) {
       e.stopPropagation();
-
       $('.entry-elapsed').each(function(i, entry) {
         entry = $(entry);
         var input = $('input', entry.siblings('.entry-amount'));
@@ -62,13 +59,15 @@
         input.val(Number(input.val()) + newHours);
       });
 
-      populateHourTotals();
       clearTimers(e);
 
       setTimeout(function() {
         alert('Your timers have been added to your Tock lines, and the timers reset.  Don\'t forget to save!');
       }, 10);
     }
+
+    clearButton.click(clearTimers);
+    tockButton.click(tockTheTimers);
   })();
 
   // Attach change listeners to all the actual Tock time boxes
