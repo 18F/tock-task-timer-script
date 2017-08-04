@@ -4,17 +4,21 @@
   "description": "",
   "main": "tock-play.js",
   "watch": {
-    "build": "tock-play.js"
+    "build": "pieces/*.js"
   },
   "scripts": {
-    "build": "uglifyjs tock-play.js --screw-ie8 --mangle --compress --output tock-play.min.js && npm run urlencode && npm run addjs",
-    "urlencode": "node -e \"require('fs').writeFileSync('tock-play.min.js', encodeURIComponent(require('fs').readFileSync('tock-play.min.js')))\"",
     "addjs": "echo \"javascript:$(cat tock-play.min.js)\\c\" > tock-play.min.js",
+    "build": " npm run concat && npm run uglify && npm run urlencode && npm run addjs",
+    "concat": "concat-cli -f pieces/*.js -o bundle.js",
+    "iife": "echo \"(function tock_play_iife($) {\\n\\n$(cat bundle.js)\\n\\n})($);\" > bundle.js",
+    "uglify": "uglifyjs bundle.js --screw-ie8 --mangle --compress --output tock-play.min.js",
+    "urlencode": "node -e \"require('fs').writeFileSync('tock-play.min.js', encodeURIComponent(require('fs').readFileSync('tock-play.min.js')))\"",
     "watch": "npm-watch"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "concat-glob-cli": "^0.1.0",
     "npm-watch": "^0.1.6",
     "uglify-js": "^2.7.4"
   }
